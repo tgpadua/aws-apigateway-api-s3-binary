@@ -1,0 +1,55 @@
+openapi: "3.0.1"
+info:
+  title: "s3-get-object"
+  version: "2023-01-05T02:42:16Z"
+paths:
+  /{bucket}/{key}:
+    get:
+      parameters:
+      - name: "key"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      - name: "bucket"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      - name: "partNumber"
+        in: "query"
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::123456789012:role/APIGateway2S3"
+        httpMethod: "GET"
+        uri: "arn:aws:apigateway:us-east-1:{bucket}.s3:path/{key}"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
+        requestParameters:
+          integration.request.querystring.partNumber: "method.request.querystring.partNumber"
+          integration.request.path.key: "method.request.path.key"
+          integration.request.path.bucket: "method.request.path.bucket"
+        passthroughBehavior: "when_no_match"
+        type: "aws"
+components:
+  schemas:
+    Empty:
+      title: "Empty Schema"
+      type: "object"
+x-amazon-apigateway-binary-media-types:
+- "*/*"
