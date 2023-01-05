@@ -1,5 +1,5 @@
 # aws-apigateway-api-s3-binary
-AWS API Gateway API supporting multi-part download from Amazon S3
+Sample AWS API Gateway API to download Amazon S3 object with support to multi-part
 
 # Sample Invocations
 ## Simple file download
